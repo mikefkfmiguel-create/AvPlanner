@@ -51,16 +51,27 @@
   p.tag {
     color: var(--apagado); margin: 0 0 40px; text-align: center; max-width: 480px; font-size: 15px;
   }
-  a.entrar {
-    display: flex; align-items: center; gap: 10px;
-    background: var(--azul); color: #fff; text-decoration: none;
-    font-size: 17px; font-weight: 600;
-    padding: 16px 32px; border-radius: 12px;
-    transition: background 0.15s, transform 0.15s;
+  .cartoes {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    width: 100%; max-width: 780px;
   }
-  a.entrar:hover { background: #4C8CFF; transform: translateY(-2px); }
-  p.nota {
-    color: var(--apagado); margin: 18px 0 0; text-align: center; max-width: 420px; font-size: 13px;
+  @media (max-width: 640px) {
+    .cartoes { grid-template-columns: 1fr; }
+  }
+  a.cartao {
+    display: flex; flex-direction: column; gap: 10px;
+    background: var(--painel); border: 1px solid var(--linha); border-radius: 14px;
+    padding: 26px 24px; text-decoration: none; color: inherit;
+    transition: border-color 0.15s, transform 0.15s, background 0.15s;
+  }
+  a.cartao:hover {
+    border-color: var(--azul); background: var(--painel-alto); transform: translateY(-2px);
+  }
+  .cartao .icone { font-size: 28px; }
+  .cartao h2 { margin: 0; font-size: 19px; }
+  .cartao p { margin: 0; color: var(--apagado); font-size: 14px; line-height: 1.5; }
+  .cartao .ir {
+    margin-top: 4px; font-size: 13px; color: var(--ciano); font-weight: 600;
   }
 
   .install-banner {
@@ -103,7 +114,7 @@
     <img src="icons/mike-logo.png" alt="Mike Apps">
   </div>
   <h1><span class="mike">Mike</span> <span class="produto">AV Planner</span></h1>
-  <p class="tag">Cálculos de produção AV — e, lá dentro, a sala montada em 3D, a um clique de distância.</p>
+  <p class="tag">Duas ferramentas da Mike Apps — cálculos de produção AV e a sala montada em 3D — cada uma na sua aba.</p>
 
   <div class="install-banner" id="install-banner" style="display:none;">
     <span class="install-dot"></span>
@@ -112,8 +123,21 @@
     <button class="install-dismiss" id="install-banner-dismiss" aria-label="Fechar">×</button>
   </div>
 
-  <a class="entrar" href="https://mikefkfmiguel-create.github.io/calculadores/" target="_blank" rel="noopener">Abrir Mike AV Planner →</a>
-  <p class="nota">Abre nos Cálculos. O botão "Preview 3D" no topo leva à sala em 3D quando precisares dela.</p>
+  <div class="cartoes">
+    <a class="cartao" href="https://mikefkfmiguel-create.github.io/calculadores/" target="_blank" rel="noopener">
+      <div class="icone">🧮</div>
+      <h2>Mike Cálculos</h2>
+      <p>Distância de projeção, ecrã LED &amp; pixel pitch, blending, distância de visualização, TVs, sinal &amp; data rate — e a ficha técnica do projeto, tudo junto.</p>
+      <div class="ir">Abrir Mike Cálculos →</div>
+    </a>
+
+    <a class="cartao" href="https://mikefkfmiguel-create.github.io/preview/" target="_blank" rel="noopener">
+      <div class="icone">🎬</div>
+      <h2>Mike Preview 3D</h2>
+      <p>A sala, o palco, o público e os ecrãs montados em 3D — para ver o projeto antes de o montar a sério, e mandar um link a quem não estiver lá.</p>
+      <div class="ir">Abrir Mike Preview 3D →</div>
+    </a>
+  </div>
 
   <footer>Mike AV Planner · ferramentas internas Mike Apps, valores para conferência antes de envio ao cliente.</footer>
 
