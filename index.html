@@ -62,6 +62,35 @@
   p.nota {
     color: var(--apagado); margin: 18px 0 0; text-align: center; max-width: 420px; font-size: 13px;
   }
+
+  .install-banner {
+    display: flex; gap: 10px; align-items: center;
+    border: 1px solid color-mix(in srgb, var(--azul) 45%, var(--linha));
+    background: color-mix(in srgb, var(--azul) 14%, var(--painel));
+    color: var(--texto);
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 13.5px;
+    max-width: 420px;
+    margin: 0 0 22px;
+  }
+  .install-banner-text { flex: 1; }
+  .install-banner-text strong { color: inherit; }
+  .install-dot {
+    flex: none; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--ciano);
+  }
+  .install-btn {
+    flex: none; font-family: inherit; font-size: 13px; font-weight: 600;
+    color: #04222b; background: var(--ciano);
+    border: none; border-radius: 8px; padding: 8px 14px; cursor: pointer;
+  }
+  .install-btn:hover { filter: brightness(1.08); }
+  .install-dismiss {
+    flex: none; font-family: inherit; font-size: 18px; line-height: 1;
+    color: var(--apagado); background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .install-dismiss:hover { opacity: 0.7; }
   footer {
     margin-top: 48px; color: var(--apagado); font-size: 12px; text-align: center;
   }
@@ -76,10 +105,98 @@
   <h1><span class="mike">Mike</span> <span class="produto">AV Planner</span></h1>
   <p class="tag">Cálculos de produção AV — e, lá dentro, a sala montada em 3D, a um clique de distância.</p>
 
+  <div class="install-banner" id="install-banner" style="display:none;">
+    <span class="install-dot"></span>
+    <div class="install-banner-text" id="install-banner-text"><strong>Instala esta app</strong> — acesso direto no ecrã principal, sem andares à procura do link.</div>
+    <button class="install-btn" id="install-banner-btn" style="display:none;">Instalar</button>
+    <button class="install-dismiss" id="install-banner-dismiss" aria-label="Fechar">×</button>
+  </div>
+
   <a class="entrar" href="https://mikefkfmiguel-create.github.io/calculadores/">Abrir Mike AV Planner →</a>
   <p class="nota">Abre nos Cálculos. O botão "Preview 3D" no topo leva à sala em 3D quando precisares dela.</p>
 
   <footer>Mike AV Planner · ferramentas internas Mike Apps, valores para conferência antes de envio ao cliente.</footer>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").then(function (reg) {
+        reg.update();
+        document.addEventListener("visibilitychange", function () {
+          if (document.visibilityState === "visible") reg.update();
+        });
+      }).catch(function (err) {
+        console.error("Falha a registar service worker:", err);
+      });
+
+      var refreshedOnce = false;
+      navigator.serviceWorker.addEventListener("controllerchange", function () {
+        if (refreshedOnce) return;
+        refreshedOnce = true;
+        window.location.reload();
+      });
+    });
+  }
+
+  (function () {
+    var DISMISS_KEY = "avplanner-install-dismissed";
+    var banner = document.getElementById("install-banner");
+    var textEl = document.getElementById("install-banner-text");
+    var btn = document.getElementById("install-banner-btn");
+    var dismissBtn = document.getElementById("install-banner-dismiss");
+    var deferredPrompt = null;
+
+    function isStandalone() {
+      return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+    }
+    function isDismissed() {
+      try { return localStorage.getItem(DISMISS_KEY) === "1"; } catch (e) { return false; }
+    }
+    function setDismissed() {
+      try { localStorage.setItem(DISMISS_KEY, "1"); } catch (e) {}
+    }
+    function hideBanner() { banner.style.display = "none"; }
+    function showBanner() {
+      if (isStandalone() || isDismissed()) return;
+      banner.style.display = "flex";
+    }
+
+    dismissBtn.addEventListener("click", function () {
+      setDismissed();
+      hideBanner();
+    });
+
+    var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+    var isAndroid = /android/i.test(navigator.userAgent);
+
+    if (isIOS && !isStandalone() && !isDismissed()) {
+      textEl.innerHTML = "<strong>Instala esta app</strong> — toca em Partilhar <span style=\"font-size:15px;\">⬆️</span> e depois em \"Adicionar ao Ecrã Principal\".";
+      showBanner();
+    }
+
+    if (isAndroid && !isStandalone() && !isDismissed()) {
+      textEl.innerHTML = "<strong>Instala esta app</strong> — no menu ⋮ do browser, procura \"Instalar aplicação\" ou \"Adicionar ao ecrã principal\".";
+      showBanner();
+    }
+
+    window.addEventListener("beforeinstallprompt", function (e) {
+      e.preventDefault();
+      deferredPrompt = e;
+      btn.style.display = "inline-block";
+      textEl.innerHTML = "<strong>Instala esta app</strong> — acesso direto no ecrã principal, sem andares à procura do link.";
+      showBanner();
+    });
+
+    btn.addEventListener("click", function () {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.finally(function () {
+        deferredPrompt = null;
+        hideBanner();
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>
