@@ -1,7 +1,7 @@
 {
-  "name": "Mike AV Planner",
+  "name": "Mike Apps AV Planner",
   "short_name": "AV Planner",
-  "description": "Mike AV Planner — cálculos e visualização 3D para produção de eventos AV, num só lugar.",
+  "description": "Mike Apps AV Planner — cálculos e visualização 3D para produção de eventos AV, num só lugar.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
