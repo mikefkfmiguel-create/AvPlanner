@@ -1,4 +1,4 @@
-const CACHE = "avplanner-v1";
+const CACHE = "avplanner-v2";
 const APP_SHELL = [
   "./",
   "./index.html",

@@ -74,6 +74,29 @@
     margin-top: 4px; font-size: 13px; color: var(--ciano); font-weight: 600;
   }
 
+  .feedback {
+    width: 100%; max-width: 780px; margin-top: 28px;
+    background: var(--painel); border: 1px solid var(--linha); border-radius: 14px;
+    padding: 22px 24px;
+  }
+  .feedback h2 { margin: 0 0 4px; font-size: 16px; }
+  .feedback p.desc { margin: 0 0 14px; color: var(--apagado); font-size: 13.5px; }
+  .feedback input, .feedback textarea {
+    width: 100%; box-sizing: border-box; font-family: inherit; font-size: 14px;
+    background: var(--fundo); color: var(--texto); border: 1px solid var(--linha);
+    border-radius: 8px; padding: 9px 11px; margin-bottom: 10px; resize: vertical;
+  }
+  .feedback input:focus, .feedback textarea:focus { outline: none; border-color: var(--azul); }
+  .feedback-linha { display: flex; align-items: center; gap: 12px; }
+  .feedback button {
+    flex: none; font-family: inherit; font-size: 13.5px; font-weight: 600;
+    color: #04222b; background: var(--ciano); border: none; border-radius: 8px;
+    padding: 9px 18px; cursor: pointer;
+  }
+  .feedback button:hover { filter: brightness(1.08); }
+  .feedback button:disabled { opacity: 0.55; cursor: default; filter: none; }
+  .feedback .estado { font-size: 13px; color: var(--apagado); }
+
   .install-banner {
     display: flex; gap: 10px; align-items: center;
     border: 1px solid color-mix(in srgb, var(--azul) 45%, var(--linha));
@@ -137,6 +160,17 @@
       <p>A sala, o palco, o público e os ecrãs montados em 3D — para ver o projeto antes de o montar a sério, e mandar um link a quem não estiver lá.</p>
       <div class="ir">Abrir Mike Apps Preview 3D →</div>
     </a>
+  </div>
+
+  <div class="feedback">
+    <h2>Bug ou sugestão?</h2>
+    <p class="desc">Curto, sem filtros — vai direto para quem trata disto.</p>
+    <input id="fbNome" type="text" placeholder="O teu nome (opcional)" maxlength="100">
+    <textarea id="fbMensagem" rows="3" placeholder="Descreve o bug ou a ideia…" maxlength="4000"></textarea>
+    <div class="feedback-linha">
+      <button type="button" id="fbEnviar">Enviar</button>
+      <span class="estado" id="fbEstado"></span>
+    </div>
   </div>
 
   <footer>Mike Apps AV Planner · ferramentas internas Mike Apps, valores para conferência antes de envio ao cliente.</footer>
@@ -218,6 +252,47 @@
         deferredPrompt = null;
         hideBanner();
       });
+    });
+  })();
+
+  (function () {
+    // Manda o feedback ao mesmo Worker que os Calculadores já usam para o
+    // Assistente — o domínio inteiro (mikefkfmiguel-create.github.io) já
+    // está autorizado lá, por isso não precisa de nada novo desse lado.
+    // O Worker junta 5 mensagens e manda um só email — aqui só se sabe se
+    // ficou registado, nunca se já disparou o envio.
+    var WORKER_URL = "https://calculadores-assistente.avkvideoshare.workers.dev/feedback";
+    var nomeEl = document.getElementById("fbNome");
+    var msgEl = document.getElementById("fbMensagem");
+    var btnEl = document.getElementById("fbEnviar");
+    var estadoEl = document.getElementById("fbEstado");
+    if (!btnEl) return;
+
+    btnEl.addEventListener("click", function () {
+      var mensagem = msgEl.value.trim();
+      if (!mensagem) {
+        estadoEl.textContent = "Escreve algo antes de enviar.";
+        return;
+      }
+      btnEl.disabled = true;
+      estadoEl.textContent = "A enviar…";
+      fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome: nomeEl.value.trim(), mensagem: mensagem }),
+      })
+        .then(function (res) { if (!res.ok) throw new Error("falhou"); })
+        .then(function () {
+          estadoEl.textContent = "Obrigado — recebido.";
+          msgEl.value = "";
+          nomeEl.value = "";
+        })
+        .catch(function () {
+          estadoEl.textContent = "Não consegui enviar — tenta outra vez.";
+        })
+        .finally(function () {
+          btnEl.disabled = false;
+        });
     });
   })();
 </script>
