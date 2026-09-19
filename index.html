@@ -74,6 +74,31 @@
     margin-top: 4px; font-size: 13px; color: var(--ciano); font-weight: 600;
   }
 
+  /* INSTALAR, a partir daqui.
+     Nenhum link instala nada — nenhum browser deixa, e ainda bem: a alternativa
+     era qualquer página do mundo poder pôr ícones no telemóvel de quem a abre.
+     A instalação é sempre um gesto feito DENTRO da app. O que este link faz é o
+     mais perto disso que existe: abre a app com "#instalar" no endereço, e é a
+     app que pede a instalação mal acaba de carregar. Ver js/instalar.js nas
+     duas apps.
+     Fica FORA do <a> do cartão — um link dentro de outro link não é HTML. */
+  .caixa-cartao { display: flex; flex-direction: column; }
+  .caixa-cartao > a.cartao {
+    flex: 1; border-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+  }
+  a.instalar-app {
+    display: block; text-align: center; padding: 11px 14px;
+    background: var(--painel); border: 1px solid var(--linha);
+    border-radius: 0 0 14px 14px; text-decoration: none;
+    color: var(--ciano); font-size: 13px; font-weight: 600;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  a.instalar-app:hover { background: var(--painel-alto); border-color: var(--azul); }
+  .nota-instalar {
+    width: 100%; max-width: 780px; margin: 12px 0 0;
+    color: var(--apagado); font-size: 12.5px; line-height: 1.5; text-align: center;
+  }
+
   .feedback {
     width: 100%; max-width: 780px; margin-top: 28px;
     background: var(--painel); border: 1px solid var(--linha); border-radius: 14px;
@@ -147,20 +172,37 @@
   </div>
 
   <div class="cartoes">
-    <a class="cartao" href="https://mikefkfmiguel-create.github.io/calculadores/" target="_blank" rel="noopener">
-      <div class="icone">🧮</div>
-      <h2>Mike Apps Cálculos</h2>
-      <p>Distância de projeção, ecrã LED &amp; pixel pitch, blending, distância de visualização, TVs, sinal &amp; data rate — e a ficha técnica do projeto, tudo junto.</p>
-      <div class="ir">Abrir Mike Apps Cálculos →</div>
-    </a>
+    <div class="caixa-cartao">
+      <a class="cartao" href="https://mikefkfmiguel-create.github.io/calculadores/" target="_blank" rel="noopener">
+        <div class="icone">🧮</div>
+        <h2>Mike Apps Cálculos</h2>
+        <p>Distância de projeção, ecrã LED &amp; pixel pitch, blending, distância de visualização, TVs, sinal &amp; data rate — e a ficha técnica do projeto, tudo junto.</p>
+        <div class="ir">Abrir Mike Apps Cálculos →</div>
+      </a>
+      <a class="instalar-app" href="https://mikefkfmiguel-create.github.io/calculadores/#instalar"
+         target="_blank" rel="noopener"
+         title="Abre a app e pede logo a instalação. No iPhone e no Firefox, que não deixam pedir, a app diz o caminho do menu.">⤓ Instalar a app</a>
+    </div>
 
-    <a class="cartao" href="https://mikefkfmiguel-create.github.io/preview/" target="_blank" rel="noopener">
-      <div class="icone">🎬</div>
-      <h2>Mike Apps Preview 3D</h2>
-      <p>A sala, o palco, o público e os ecrãs montados em 3D — para ver o projeto antes de o montar a sério, e mandar um link a quem não estiver lá.</p>
-      <div class="ir">Abrir Mike Apps Preview 3D →</div>
-    </a>
+    <div class="caixa-cartao">
+      <a class="cartao" href="https://mikefkfmiguel-create.github.io/preview/" target="_blank" rel="noopener">
+        <div class="icone">🎬</div>
+        <h2>Mike Apps Preview 3D</h2>
+        <p>A sala, o palco, o público e os ecrãs montados em 3D — para ver o projeto antes de o montar a sério, e mandar um link a quem não estiver lá.</p>
+        <div class="ir">Abrir Mike Apps Preview 3D →</div>
+      </a>
+      <a class="instalar-app" href="https://mikefkfmiguel-create.github.io/preview/#instalar"
+         target="_blank" rel="noopener"
+         title="Abre a app e pede logo a instalação. No iPhone e no Firefox, que não deixam pedir, a app diz o caminho do menu.">⤓ Instalar a app</a>
+    </div>
   </div>
+
+  <p class="nota-instalar">
+    “Instalar” abre a app e pede a instalação por ti — é o mais longe que um link
+    pode ir: só de dentro da app é que o browser deixa instalar.
+    No Chrome e no Edge aparece a caixa de instalação; no iPhone e no Firefox, que
+    não têm essa caixa, a app diz o caminho do menu nessa plataforma.
+  </p>
 
   <div class="feedback">
     <h2>Bug ou sugestão?</h2>
