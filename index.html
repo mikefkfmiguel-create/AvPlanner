@@ -150,6 +150,27 @@
     color: var(--apagado); background: none; border: none; cursor: pointer; padding: 4px;
   }
   .install-dismiss:hover { opacity: 0.7; }
+  /* Better call Mike: dark tech, a linha toda. */
+  .caixa-bcm { grid-column: 1 / -1; }
+  a.cartao.cartao-bcm {
+    color: #E6F4FA; border-color: rgba(74,189,214,0.45);
+    background:
+      linear-gradient(rgba(74,189,214,0.07) 1px, transparent 1px) 0 0 / 100% 14px,
+      linear-gradient(90deg, rgba(74,189,214,0.07) 1px, transparent 1px) 0 0 / 14px 100%,
+      linear-gradient(135deg, #0B1621 0%, #0F2433 60%, #12303F 100%);
+  }
+  a.cartao.cartao-bcm:hover { border-color: #4ABDD6; box-shadow: 0 0 16px rgba(74,189,214,0.22); }
+  .cartao-bcm p { color: #9CC3D2; }
+  .cartao-bcm .ir { color: #4ABDD6; }
+  .bcm-linha { display: flex; gap: 16px; align-items: flex-start; }
+  .bcm-icone {
+    flex: 0 0 auto; display: grid; place-items: center; width: 50px; height: 50px; border-radius: 50%;
+    background: rgba(74,189,214,0.12); border: 1px solid rgba(74,189,214,0.5); box-shadow: 0 0 14px rgba(74,189,214,0.25);
+  }
+  .bcm-linha h2 { margin: 2px 0 6px; }
+  a.instalar-app.instalar-bcm { border-color: rgba(74,189,214,0.45); background: #0D1C27; color: #4ABDD6; }
+  a.instalar-app.instalar-bcm:hover { border-color: #4ABDD6; }
+
   footer {
     margin-top: 48px; color: var(--apagado); font-size: 12px; text-align: center;
   }
@@ -162,7 +183,7 @@
     <img src="icons/mike-logo.png" alt="Mike Apps">
   </div>
   <h1><span class="mike">Mike Apps</span> <span class="produto">AV Planner</span></h1>
-  <p class="tag">Duas ferramentas da Mike Apps — cálculos de produção AV e a sala montada em 3D — cada uma na sua aba.</p>
+  <p class="tag">Três ferramentas da Mike Apps — perguntar ao Mike, cálculos de produção AV e a sala montada em 3D — cada uma na sua aba.</p>
 
   <div class="install-banner" id="install-banner" style="display:none;">
     <span class="install-dot"></span>
@@ -172,6 +193,25 @@
   </div>
 
   <div class="cartoes">
+    <!-- Better call Mike: a entrada de arranque rápido -- perguntar com texto,
+         foto, PDF ou email, e daí levar o projeto para os Cálculos ou o 3D.
+         Ocupa a linha toda: é o primeiro passo das outras duas. -->
+    <div class="caixa-cartao caixa-bcm">
+      <a class="cartao cartao-bcm" href="https://mikefkfmiguel-create.github.io/calculadores/mike/" target="_blank" rel="noopener">
+        <div class="bcm-linha">
+          <span class="bcm-icone" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#4ABDD6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span>
+          <div>
+            <h2>Better call Mike</h2>
+            <p>Dúvidas técnicas do terreno e pedidos de projeto: escreve, tira uma foto, anexa um PDF ou cola um email. A resposta diz de onde vem, e o projeto segue com um toque para os Cálculos ou o Preview 3D.</p>
+          </div>
+        </div>
+        <div class="ir">Abrir Better call Mike →</div>
+      </a>
+      <a class="instalar-app instalar-bcm" href="https://mikefkfmiguel-create.github.io/calculadores/mike/#instalar"
+         target="_blank" rel="noopener"
+         title="Abre a app e pede logo a instalação. No iPhone e no Firefox, que não deixam pedir, a app diz o caminho do menu.">⤓ Instalar a app</a>
+    </div>
+
     <div class="caixa-cartao">
       <a class="cartao" href="https://mikefkfmiguel-create.github.io/calculadores/" target="_blank" rel="noopener">
         <div class="icone">🧮</div>
