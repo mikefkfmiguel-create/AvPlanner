@@ -1,4 +1,4 @@
-const CACHE = "avplanner-v3";
+const CACHE = "avplanner-v4";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -37,6 +37,11 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
+
+  // No endereço próprio (avplanner.mike-app.com) esta página vive na raiz e o scope apanha também
+  // /calculadores/ e /preview/, que têm o seu próprio service worker: aqui só se mexe no que é desta página.
+  const raiz = new URL(self.registration.scope).pathname;
+  if (url.pathname.startsWith(raiz) && /^\/(calculadores|preview)\//.test(url.pathname.slice(raiz.length - 1))) return;
 
   // Uma página só: a navegação vai sempre primeiro à rede, para uma
   // correção aparecer no proximo carregamento sem precisar de dois reloads
